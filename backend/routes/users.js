@@ -7,6 +7,10 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// router.route('/getuser/{username}').get((req, res) => {
+//     const 
+// })
+
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const password = req.body.password;

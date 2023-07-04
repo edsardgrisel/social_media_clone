@@ -9,7 +9,7 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         trim: true,
-        minlength: 5,
+        minlength: 3,
     }, 
     password: {
         type: String,
@@ -36,7 +36,34 @@ userSchema.pre('save', function(next) {
     }
 })
 
+userSchema.statics.signup = async (username, password, email) => {
+    const emailExists = await this.findOne(username);
+    const usernameExists = await this.findOne(username);
 
+    if(emailExists) {
+        throw Error('Email already associated with an account!');
+    } 
+    if (usernameExists) {
+        throw Error('Username already taken!');
+    }
+
+    const user = await this.create({username, password, email});
+
+    return user;
+
+
+}
+
+// userSchema.methods.checkPassword = async function (password) {
+//     if(!password) {
+//         throw new Error("Password not found!");
+//     }
+//     try {
+//         await bcrypt.compare(password, this.password);
+//     } catch (error) {
+//         console.log("Error while checking password: " + error);
+//     }
+// }
 
 
 const User = mongoose.model('User', userSchema);
